@@ -15,14 +15,22 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
+<<<<<<< HEAD
 git remote add origin https://gitlab.com/qashworth/imdavidb.git
+=======
+git remote add origin https://gitlab.com/qashworth-group/imdavidb.git
+>>>>>>> 49f156b (first commit, prototype)
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
+<<<<<<< HEAD
 * [Set up project integrations](https://gitlab.com/qashworth/imdavidb/-/settings/integrations)
+=======
+* [Set up project integrations](https://gitlab.com/qashworth-group/imdavidb/-/settings/integrations)
+>>>>>>> 49f156b (first commit, prototype)
 
 ## Collaborate with your team
 
