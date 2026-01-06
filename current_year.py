@@ -45,7 +45,6 @@ with st.sidebar.form("Add a New Movie:"):
     rating_list = ["G","PG","PG-13","R","NC-17","M","X","P","GP","NR","UR","AP"]
     genre_list = ["Mystery/Suspense/Thriller","Drama","Comedy","Foreign","Sci-Fi","Action","Fantasy","Horror","War","Family","Sports","Western","Documentary","Short","Musical","F"]
 
-    movie_id = get_uuid
     movie_title = st.text_input("Movie Title", value="", max_chars=None, key="movie_title")
     thumbs_up = st.checkbox("👍", value=False, key="thumbs_up")
     bomb = st.checkbox("💣", value=False, key="bomb")
