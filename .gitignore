@@ -2,3 +2,4 @@ secrets.toml
 .env
 .venv
 .streamlit
+.devcontainer
