@@ -21,10 +21,12 @@ def apply_emoji(df):
             df["bomb"] = df["bomb"].map(emoji_map_bomb).fillna("")
     return df
 
-st.title('IMDavidB')
-st.image("https://imdavidb2.s3.us-east-2.amazonaws.com/assets/cinema_wellman_logo.JPG", width=300)
-st.write('All movies screened:')
-
+left_co, cent_co, right_co = st.columns(3)
+with left_co:
+    st.title('IMDavidB')
+    st.write('All movies screened:')
+with cent_co:
+    st.image("https://imdavidb2.s3.us-east-2.amazonaws.com/assets/cinema_wellman_logo.JPG", width=300)
 
 # Initialize connection.
 conn = st.connection('mysql', type='sql')
