@@ -24,7 +24,7 @@ def apply_emoji(df):
     return df
 
 st.title('IMDavidB')
-st.image("imdavidb/assets/logo.jpg", width=300)
+st.image("https://imdavidb2.s3.us-east-2.amazonaws.com/assets/cinema_wellman_logo.JPG", width=300)
 st.write('Movies screened so far this year:')
 
 # Initialize connection.
