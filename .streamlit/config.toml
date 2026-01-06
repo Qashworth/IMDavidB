@@ -1,0 +1,6 @@
+[theme]
+primaryColor="ghostwhite"
+dataframeBorderColor="crimson"
+
+[theme.sidebar]
+secondaryBackgroundColor="lightcoral"

@@ -22,7 +22,7 @@ def apply_emoji(df):
     return df
 
 st.title('IMDavidB')
-st.image(Image.open(str("assets/logo.jpg")), width=300)
+st.image(str("assets/logo.jpg"), width=300)
 st.write('All movies screened:')
 
 
