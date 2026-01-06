@@ -5,8 +5,6 @@ import uuid
 from datetime import date
 from sqlalchemy import text
 
-st.set_page_config(layout="wide")
-
 get_uuid = str(uuid.uuid4())
 emoji_map_oscar_win = {0: "", 1: "🏆"}
 emoji_map_oscar_nom = {0: "", 1: "✉️"}
@@ -46,7 +44,7 @@ df_placeholder.dataframe(df)
     
 # Form allows us to receive user input without forcing a rerun
 with st.sidebar.form("Add a New Movie:"):
-    rating_list = ["G","PG","PG-13","R","NC-17","M","X","GP","NR","UR","AP"]
+    rating_list = ["G","PG","PG-13","R","NC-17","M","X","P","GP","NR","UR","AP"]
     genre_list = ["Mystery/Suspense/Thriller","Drama","Comedy","Foreign","Sci-Fi","Action","Fantasy","Horror","War","Family","Sports","Western","Documentary","Short","Musical","F"]
 
     movie_id = get_uuid
