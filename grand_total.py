@@ -3,12 +3,11 @@ import pandas as pd
 import numpy as np
 from sqlalchemy import text
 
-emoji_map_oscar_win = {0: "", 1: "🏆"}
-emoji_map_oscar_nom = {0: "", 1: "✉️"}
-emoji_map_thumbs_up = {0: "", 1: "👍"}
-emoji_map_bomb = {0: "", 1: "💣"}
-
 def apply_emoji(df):
+    emoji_map_oscar_win = {0: "", 1: "🏆"}
+    emoji_map_oscar_nom = {0: "", 1: "✉️"}
+    emoji_map_thumbs_up = {0: "", 1: "👍"}
+    emoji_map_bomb = {0: "", 1: "💣"}
     if isinstance(df, pd.DataFrame):
         df = df.copy()
         if "oscar_win" in df.columns:

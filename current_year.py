@@ -5,13 +5,11 @@ import uuid
 from datetime import date
 from sqlalchemy import text
 
-get_uuid = str(uuid.uuid4())
-emoji_map_oscar_win = {0: "", 1: "🏆"}
-emoji_map_oscar_nom = {0: "", 1: "✉️"}
-emoji_map_thumbs_up = {0: "", 1: "👍"}
-emoji_map_bomb = {0: "", 1: "💣"}
-
 def apply_emoji(df):
+    emoji_map_oscar_win = {0: "", 1: "🏆"}
+    emoji_map_oscar_nom = {0: "", 1: "✉️"}
+    emoji_map_thumbs_up = {0: "", 1: "👍"}
+    emoji_map_bomb = {0: "", 1: "💣"}
     if isinstance(df, pd.DataFrame):
         df = df.copy()
         if "oscar_win" in df.columns:
