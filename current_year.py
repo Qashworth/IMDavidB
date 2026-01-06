@@ -32,7 +32,7 @@ conn = st.connection('mysql', type='sql')
 
 # Perform query (exclude movie_id).
 df = conn.query(
-    'SELECT movie_title, thumbs_up, bomb, release_year, rating, run_time, genre, director, country, source_viewed, date_watched, oscar_win, oscar_wins_category, num_oscar_wins, oscar_nom, oscar_noms_category, num_oscar_noms FROM movies WHERE date_watched >= "2026-01-01";',
+    'SELECT movie_title, thumbs_up, bomb, release_year, rating, run_time, genre, director, country, source_viewed, date_watched, oscar_nom, oscar_noms_category, num_oscar_noms, oscar_win, oscar_wins_category, num_oscar_wins FROM movies WHERE date_watched >= "2026-01-01";',
     ttl=600,
 )
 # use a placeholder so we can update the table after inserts
@@ -59,12 +59,12 @@ with st.sidebar.form("Add a New Movie:"):
     country = st.text_input("Country", value="", max_chars=None, key="country")
     source_viewed = st.text_input("Source", value="", max_chars=None, key="source_viewed")
     date_watched = st.date_input("Date Watched", key="date_watched") 
-    oscar_win = st.checkbox("🏆", value=False, key="oscar_win")
-    num_oscar_wins = st.number_input("Number of Oscar wins", min_value=0, key="num_oscar_wins")
-    oscar_wins_category = st.text_input("Oscar win categories", value="", max_chars=None, key="oscar_wins_category")
     oscar_nom = st.checkbox("✉️", value=False, key="oscar_nom")
     num_oscar_noms = st.number_input("Number of Oscar noms", min_value=0, key="num_oscar_noms")
     oscar_noms_category = st.text_input("Oscar nomination categories", value="", max_chars=None, key="oscar_noms_category")
+    oscar_win = st.checkbox("🏆", value=False, key="oscar_win")
+    num_oscar_wins = st.number_input("Number of Oscar wins", min_value=0, key="num_oscar_wins")
+    oscar_wins_category = st.text_input("Oscar win categories", value="", max_chars=None, key="oscar_wins_category")
 
     # Build new movie payload and submit on form submit
     submitted = st.form_submit_button('Add Movie')
@@ -93,24 +93,24 @@ with st.sidebar.form("Add a New Movie:"):
             "country": country or None,
             "source_viewed": source_viewed or None,
             "date_watched": date_watched or None,
-            "oscar_win": bool_to_int(oscar_win),
-            "oscar_wins_category": oscar_wins_category or None,
-            "num_oscar_wins": int(num_oscar_wins) if num_oscar_wins is not None else 0,
             "oscar_nom": bool_to_int(oscar_nom),
             "oscar_noms_category": oscar_noms_category or None,
             "num_oscar_noms": int(num_oscar_noms) if num_oscar_noms is not None else 0,
+            "oscar_win": bool_to_int(oscar_win),
+            "oscar_wins_category": oscar_wins_category or None,
+            "num_oscar_wins": int(num_oscar_wins) if num_oscar_wins is not None else 0,
         }
 
         insert_sql = text(
             """
             INSERT INTO movies (
                 movie_id, movie_title, thumbs_up, bomb, release_year, rating, run_time, genre,
-                director, country, source_viewed, date_watched, oscar_win,
-                oscar_wins_category, num_oscar_wins, oscar_nom, oscar_noms_category, num_oscar_noms
+                director, country, source_viewed, date_watched, oscar_nom, oscar_noms_category, num_oscar_noms, oscar_win,
+                oscar_wins_category, num_oscar_wins,
             ) VALUES (
                 :movie_id, :movie_title, :thumbs_up, :bomb, :release_year, :rating, :run_time, :genre,
-                :director, :country, :source_viewed, :date_watched, :oscar_win,
-                :oscar_wins_category, :num_oscar_wins, :oscar_nom, :oscar_noms_category, :num_oscar_noms
+                :director, :country, :source_viewed, :date_watched, :oscar_nom, :oscar_noms_category, :num_oscar_noms, :oscar_win,
+                :oscar_wins_category, :num_oscar_wins
             )
             """
         )
@@ -124,7 +124,7 @@ with st.sidebar.form("Add a New Movie:"):
             # Refresh the dataframe display immediately (bypass cache)
             try:
                 refreshed = conn.query(
-                    'SELECT movie_title, thumbs_up, bomb, release_year, rating, run_time, genre, director, country, source_viewed, date_watched, oscar_win, oscar_wins_category, num_oscar_wins, oscar_nom, oscar_noms_category, num_oscar_noms FROM movies WHERE date_watched >= "2026-01-01";',
+                    'SELECT movie_title, thumbs_up, bomb, release_year, rating, run_time, genre, director, country, source_viewed, date_watched,  oscar_nom, oscar_noms_category, num_oscar_noms, oscar_win, oscar_wins_category, num_oscar_wins FROM movies WHERE date_watched >= "2026-01-01";',
                     ttl=0,
                 )
                 if not refreshed.empty:

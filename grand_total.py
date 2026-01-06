@@ -3,8 +3,6 @@ import pandas as pd
 import numpy as np
 from sqlalchemy import text
 
-st.set_page_config(layout="wide")
-
 emoji_map_oscar_win = {0: "", 1: "🏆"}
 emoji_map_oscar_nom = {0: "", 1: "✉️"}
 emoji_map_thumbs_up = {0: "", 1: "👍"}
@@ -30,7 +28,7 @@ st.write('Grand total of movies screened:')
 conn = st.connection('mysql', type='sql')
 
 df = conn.query(
-    'SELECT movie_title, thumbs_up, bomb, release_year, rating, run_time, genre, director, country, source_viewed, date_watched, oscar_win, oscar_wins_category, num_oscar_wins, oscar_nom, oscar_noms_category, num_oscar_noms FROM movies ORDER BY movie_title ASC;',
+    'SELECT movie_title, thumbs_up, bomb, release_year, rating, run_time, genre, director, country, source_viewed, date_watched, oscar_nom, oscar_noms_category, num_oscar_noms, oscar_win, oscar_wins_category, num_oscar_wins FROM movies ORDER BY movie_title ASC;',
     ttl=600,
 )
 
