@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sqlalchemy import text
+from PIL import Image
 
 def apply_emoji(df):
     emoji_map_oscar_win = {0: "", 1: "🏆"}
@@ -21,7 +22,9 @@ def apply_emoji(df):
     return df
 
 st.title('IMDavidB')
+st.image(Image.open("assets/logo.jpg"), width=300)
 st.write('All movies screened:')
+
 
 # Initialize connection.
 conn = st.connection('mysql', type='sql')

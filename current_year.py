@@ -4,6 +4,7 @@ import numpy as np
 import uuid
 from datetime import date
 from sqlalchemy import text
+from PIL import Image
 
 def apply_emoji(df):
     emoji_map_oscar_win = {0: "", 1: "🏆"}
@@ -23,6 +24,7 @@ def apply_emoji(df):
     return df
 
 st.title('IMDavidB')
+st.image(Image.open("assets/logo.jpg"), width=300)
 st.write('Movies screened so far this year:')
 
 # Initialize connection.
