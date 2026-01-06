@@ -22,7 +22,7 @@ def apply_emoji(df):
     return df
 
 st.title('IMDavidB')
-st.write('Grand total of movies screened:')
+st.write('All movies screened:')
 
 # Initialize connection.
 conn = st.connection('mysql', type='sql')
