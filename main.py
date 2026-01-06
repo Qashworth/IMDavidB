@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import uuid
+from datetime import date
 from sqlalchemy import text
 
 get_uuid = str(uuid.uuid4())
@@ -12,10 +13,15 @@ st.write('Movies screened so far this year:')
 # Initialize connection.
 conn = st.connection('mysql', type='sql')
 
-# Perform query.
-df = conn.query('SELECT * from movies;', ttl=600)
+# Perform query (exclude movie_id).
+df = conn.query(
+    'SELECT movie_title, release_year, rating, run_time, genre, director, country, source_viewed, date_watched, oscar_win, oscar_wins_category, num_oscar_wins, oscar_nom, oscar_noms_category, num_oscar_noms FROM movies;',
+    ttl=600,
+)
 # use a placeholder so we can update the table after inserts
 df_placeholder = st.empty()
+if not df.empty:
+    df.index = range(1, len(df) + 1)
 df_placeholder.dataframe(df)
     
 # Form allows us to receive user input without forcing a rerun
@@ -25,9 +31,9 @@ with st.sidebar.form("Add a New Movie:"):
 
     movie_id = get_uuid
     movie_title = st.text_input("Movie Title", value="", max_chars=None, key="movie_title")
-    release_year = st.number_input("Year Released", min_value=0, key="release_year")
+    release_year = st.number_input("Year Released", min_value=0, value=None, key="release_year")
     rating = st.selectbox("Rating", rating_list, key="rating")
-    run_time = st.number_input("Run Time", min_value=0, key="run_time")
+    run_time = st.number_input("Run Time", min_value=0,value=None, key="run_time")
     genre = st.multiselect("Genre", genre_list, key="genre") 
     director = st.text_input("Director", value="", max_chars=None, key="director")
     country = st.text_input("Country", value="", max_chars=None, key="country")
@@ -35,10 +41,10 @@ with st.sidebar.form("Add a New Movie:"):
     date_watched = st.date_input("Date Watched", key="date_watched") 
     oscar_win = st.checkbox("🏆", value=False, key="oscar_win")
     num_oscar_wins = st.number_input("Number of Oscar wins", min_value=0, key="num_oscar_wins")
-    oscar_wins_catagory = st.text_input("Oscar win catagories", value="", max_chars=None, key="oscar_wins_catagory")
+    oscar_wins_category = st.text_input("Oscar win categories", value="", max_chars=None, key="oscar_wins_category")
     oscar_nom = st.checkbox("✉️", value=False, key="oscar_nom")
     num_oscar_noms = st.number_input("Number of Oscar noms", min_value=0, key="num_oscar_noms")
-    oscar_noms_catagory = st.text_input("Oscar nomination catagories", value="", max_chars=None, key="oscar_noms_catagory")
+    oscar_noms_category = st.text_input("Oscar nomination categories", value="", max_chars=None, key="oscar_noms_category")
 
     # Build new movie payload and submit on form submit
     submitted = st.form_submit_button('Add Movie')
@@ -66,10 +72,10 @@ with st.sidebar.form("Add a New Movie:"):
             "source_viewed": source_viewed or None,
             "date_watched": date_watched or None,
             "oscar_win": bool_to_int(oscar_win),
-            "oscar_wins_catagory": oscar_wins_catagory or None,
+            "oscar_wins_category": oscar_wins_category or None,
             "num_oscar_wins": int(num_oscar_wins) if num_oscar_wins is not None else 0,
             "oscar_nom": bool_to_int(oscar_nom),
-            "oscar_noms_catagory": oscar_noms_catagory or None,
+            "oscar_noms_category": oscar_noms_category or None,
             "num_oscar_noms": int(num_oscar_noms) if num_oscar_noms is not None else 0,
         }
 
@@ -78,11 +84,11 @@ with st.sidebar.form("Add a New Movie:"):
             INSERT INTO movies (
                 movie_id, movie_title, release_year, rating, run_time, genre,
                 director, country, source_viewed, date_watched, oscar_win,
-                oscar_wins_catagory, num_oscar_wins, oscar_nom, oscar_noms_catagory, num_oscar_noms
+                oscar_wins_category, num_oscar_wins, oscar_nom, oscar_noms_category, num_oscar_noms
             ) VALUES (
                 :movie_id, :movie_title, :release_year, :rating, :run_time, :genre,
                 :director, :country, :source_viewed, :date_watched, :oscar_win,
-                :oscar_wins_catagory, :num_oscar_wins, :oscar_nom, :oscar_noms_catagory, :num_oscar_noms
+                :oscar_wins_category, :num_oscar_wins, :oscar_nom, :oscar_noms_category, :num_oscar_noms
             )
             """
         )
@@ -95,7 +101,12 @@ with st.sidebar.form("Add a New Movie:"):
 
             # Refresh the dataframe display immediately (bypass cache)
             try:
-                refreshed = conn.query('SELECT * from movies;', ttl=0)
+                refreshed = conn.query(
+                    'SELECT movie_title, release_year, rating, run_time, genre, director, country, source_viewed, date_watched, oscar_win, oscar_wins_category, num_oscar_wins, oscar_nom, oscar_noms_category, num_oscar_noms FROM movies;',
+                    ttl=0,
+                )
+                if not refreshed.empty:
+                    refreshed.index = range(1, len(refreshed) + 1)
                 df_placeholder.dataframe(refreshed)
             except Exception as e:
                 st.warning(f"Could not refresh dataframe: {e}")
