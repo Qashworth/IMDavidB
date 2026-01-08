@@ -32,9 +32,13 @@ with cent_co:
 
 
 # Initialize connection.
-conn = st.connection('mysql', type='sql')
+@st.cache_resource
+def get_connection():
+    return st.connection('mysql', type='sql')
 
-# Perform query (exclude movie_id).
+conn = get_connection()
+
+# create query (exclude movie_id).
 df = conn.query(
     'SELECT movie_title, thumbs_up, bomb, release_year, rating, run_time, genre, director, country, source_viewed, date_watched, oscar_nom, oscar_noms_category, num_oscar_noms, oscar_win, oscar_wins_category, num_oscar_wins FROM movies WHERE date_watched >= "2026-01-01";',
     ttl=600,
@@ -109,7 +113,7 @@ with st.sidebar.form("Add a New Movie:"):
             INSERT INTO movies (
                 movie_id, movie_title, thumbs_up, bomb, release_year, rating, run_time, genre,
                 director, country, source_viewed, date_watched, oscar_nom, oscar_noms_category, num_oscar_noms, oscar_win,
-                oscar_wins_category, num_oscar_wins,
+                oscar_wins_category, num_oscar_wins
             ) VALUES (
                 :movie_id, :movie_title, :thumbs_up, :bomb, :release_year, :rating, :run_time, :genre,
                 :director, :country, :source_viewed, :date_watched, :oscar_nom, :oscar_noms_category, :num_oscar_noms, :oscar_win,
